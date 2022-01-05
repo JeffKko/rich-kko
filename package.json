@@ -1,0 +1,21 @@
+{
+  "name": "richkko",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "workspaces/*"
+  ],
+  "scripts": {
+    "start": "node workspaces/server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "env-cmd": "^10.1.0"
+  }
+}
