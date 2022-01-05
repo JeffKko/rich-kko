@@ -39,6 +39,7 @@ function Copyright(props) {
 }
 
 const drawerWidth = 240;
+const APP_API_URL = process.env.REACT_APP_API_URL
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -93,7 +94,7 @@ function DashboardContent() {
   };
 
   const handlerTest = async () => {
-    const res = await axios.post('http://localhost:8080/api/v3/order/test', {
+    const res = await axios.post(`${APP_API_URL}/api/v3/order/test`, {
       symbol: 'ETHUSDT'
     })
 

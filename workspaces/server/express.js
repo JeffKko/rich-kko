@@ -19,12 +19,12 @@ const sequelize = new Sequelize({
 });
 
 (async() => {
-  try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
+  // try {
+  //   await sequelize.authenticate();
+  //   console.log('Connection has been established successfully.');
+  // } catch (error) {
+  //   console.error('Unable to connect to the database:', error);
+  // }
 
   // class User extends Model {}
 
@@ -56,7 +56,7 @@ app.use(cors({
   credentials: true,
 }))
 app.use(cookieParser())
-app.use('/', express.static('build'))
+// app.use('/', express.static('build'))
 app.use(express.json()) // parse json
 
 app.get('/test', (req, res) => {

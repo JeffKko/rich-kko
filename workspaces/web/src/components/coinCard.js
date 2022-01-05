@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 
+const APP_API_URL = process.env.REACT_APP_API_URL
+
 const CoinCard = ({ symbol }) => {
   const [tickerPrice, setTickerPrice] = useState(null);
 
   const handlerFetchPrice = async () => {
-    const tickerPriceRes = await axios.get('http://localhost:8080/api/v3/ticker/24hr', {
+    const tickerPriceRes = await axios.get(`${APP_API_URL}/api/v3/ticker/24hr`, {
       params: {
         symbol,
       }
