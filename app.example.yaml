@@ -1,0 +1,23 @@
+runtime: nodejs14
+
+env_variables:
+  BIAN_API_KEY:
+  BIAN_SECRET_KEY:
+  DISCORD_BOT_TOKEN:
+
+handlers:
+  - url: /
+    static_files: workspaces/web/build/index.html
+    upload: workspaces/web/build/index.html
+
+  - url: /favicon.ico
+    static_files: workspaces/web/build/favicon.ico
+    upload: workspaces/web/build/favicon.ico
+
+  - url: /static
+    static_dir: workspaces/web/build/static
+
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto

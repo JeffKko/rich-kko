@@ -1,0 +1,4 @@
+cron:
+  - description: "hello talk"
+    url: /api/talk
+    schedule: every 3 minutes

@@ -137,7 +137,7 @@ app.post('/api/v3/order/test', async (req, res) => {
 
 app.get('/api/talk', async (req, res) => {
   await createMessage('Hello talk')
-  await res.status(200)
+  await res.status(200).end()
 })
 
 app.get('/rates', function(req, res) {
