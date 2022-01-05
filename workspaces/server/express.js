@@ -56,7 +56,7 @@ app.use(cors({
   credentials: true,
 }))
 app.use(cookieParser())
-app.use('/', express.static(path.join(__dirname, '..', 'web', 'build')))
+app.use('/', express.static('build'))
 app.use(express.json()) // parse json
 
 app.get('/test', (req, res) => {
