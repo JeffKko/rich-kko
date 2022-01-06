@@ -69,6 +69,16 @@ const regionMap = {
   JP: 'ja',
 }
 
+app.get('/job/:jobName', async (req, res) => {
+  const { jobName } = req.params
+
+  console.log(jobName)
+
+  console.log(test)
+
+  await res.status(200).end()
+})
+
 app.get('/api/v3/ticker/24hr', async (req, res) => {
 
   const { symbol = 'BTCUSDT' } = req.query
