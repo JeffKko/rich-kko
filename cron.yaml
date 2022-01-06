@@ -1,4 +1,16 @@
 cron:
-  # - description: "hello talk"
-  #   url: /api/talk
-  #   schedule: every 3 minutes
+  - description: "alert 1H3%"
+    url: /job/perHour
+    schedule: every 20 minutes
+
+  - description: "alert 4H10%"
+    url: /job/per4Hour
+    schedule: every 1 hours
+
+  - description: "alert 1D15%"
+    url: /job/perDay
+    schedule: every 6 hours
+
+  - description: "alert 1W30%"
+    url: /job/perWeek
+    schedule: every day 23:00

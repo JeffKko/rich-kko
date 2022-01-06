@@ -1,13 +1,12 @@
 const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-const path = require('path')
 const app = express()
 const axios = require('axios')
 const crypto = require('crypto');
 const qs = require('qs');
 const { Sequelize, Model, DataTypes } = require('sequelize');
-const { createMessage } = require('./discordBot')
+const routers = require('./routers')
 
 const BIAN_API_KEY = process.env.BIAN_API_KEY
 const BIAN_SECRET_KEY = process.env.BIAN_SECRET_KEY
@@ -59,25 +58,7 @@ app.use(cookieParser())
 // app.use('/', express.static('build'))
 app.use(express.json()) // parse json
 
-app.get('/test', (req, res) => {
-  res.status(200).send('im a test')
-})
-
-const regionMap = {
-  HK: 'zh',
-  US: 'en',
-  JP: 'ja',
-}
-
-app.get('/job/:jobName', async (req, res) => {
-  const { jobName } = req.params
-
-  console.log(jobName)
-
-  console.log(test)
-
-  await res.status(200).end()
-})
+app.use('/', routers);
 
 app.get('/api/v3/ticker/24hr', async (req, res) => {
 
@@ -120,8 +101,6 @@ app.post('/api/v3/order/test', async (req, res) => {
     .update(queryString)
     .digest('hex');
 
-  // console.log(sign)
-
   try {
     const tickerPriceRes = await axios.post('https://api.binance.com/api/v3/order/test',
       qs.stringify({
@@ -144,68 +123,6 @@ app.post('/api/v3/order/test', async (req, res) => {
   }
 
 })
-
-app.get('/api/talk', async (req, res) => {
-  await createMessage('Hello talk')
-  await res.status(200).end()
-})
-
-app.get('/rates', function(req, res) {
-  res.status(200).json(
-    {"HKD":3.560779948128301,"USD":27.635037789469802,"JPY":0.25155912695072574}
-  )
-  // axios('http://data.fixer.io/api/latest?access_key=92a552f51b509c9cf8aa11a2a2cc8f67&symbols=TWD,HKD,USD,JPY')
-  //   .then(({ data }) => {
-
-  //     if (!data.success) Promise.reject('some error')
-
-  //     const {TWD, HKD, USD, JPY} = data.rates
-
-  //     const rates = {
-  //       HKD: TWD / HKD,
-  //       USD: TWD / USD,
-  //       JPY: TWD / JPY,
-  //     }
-
-  //     res.status(200).json(rates)
-  //   })
-  //   .catch(error => {
-  //     console.log(error)
-  //   })
-})
-
-// app.get('/sales', function(req, res) {
-//   axios(`https://ec.nintendo.com/api/${req.query.country}/${regionMap[req.query.country]}/search/sales?count=${req.query.count}&offset=${req.query.offset}`)
-//     .then(({ data }) => {
-//       console.log(data)
-//       res.status(200).json(data)
-//     })
-// })
-
-// app.get('/price', function(req, res) {
-//   console.log(req.query.ids)
-//   axios(`https://api.ec.nintendo.com/v1/price?country=${req.query.country}&lang=${regionMap[req.query.country]}&ids=${req.query.ids}`)
-//     .then(({ data }) => {
-//       console.log(data)
-//       res.status(200).json(data)
-//     })
-// })
-
-// app.get('/ranking', function(req, res) {
-//   axios(`https://ec.nintendo.com/api/${req.query.country}/${regionMap[req.query.country]}/search/ranking?count=${req.query.count}&offset=${req.query.offset}`)
-//     .then(({ data }) => {
-//       console.log(data)
-//       res.status(200).json(data)
-//     })
-// })
-
-// app.get('/new', function(req, res) {
-//   axios(`https://ec.nintendo.com/api/${req.query.country}/${regionMap[req.query.country]}/search/new?count=${req.query.count}&offset=${req.query.offset}`)
-//     .then(({ data }) => {
-//       console.log(data)
-//       res.status(200).json(data)
-//     })
-// })
 
 // app.post('/message', (req, res) => {
 //   const message = req.body.message
