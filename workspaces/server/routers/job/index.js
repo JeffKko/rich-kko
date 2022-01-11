@@ -15,6 +15,9 @@ router.get('/perHour', createJobCallback(alertBot.perHour))
 router.get('/per4Hour', createJobCallback(alertBot.per4Hour))
 router.get('/perDay', createJobCallback(alertBot.perDay))
 router.get('/perWeek', createJobCallback(alertBot.perWeek))
-router.get('/test', createJobCallback(alertBot.test))
+router.get('/test', async (req, res) => {
+  console.log('here is some log.')
+  await res.status(200).end('200')
+})
 
 module.exports = router
