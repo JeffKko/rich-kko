@@ -1,11 +1,11 @@
-const axios = require('axios')
+import axios from 'axios'
 
 const channelID = '827534182183075873'
 const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN
 
-const sendMessage = (content) => {
+export const sendMessage = (content: string) => {
   return axios.post(`https://discord.com/api/v9/channels/${channelID}/messages`, {
-      "content": content ?? "Hello, World!",
+      content,
       "tts": false,
       // "embeds": [{
       //   "title": "Hello, Embed!",
@@ -16,8 +16,4 @@ const sendMessage = (content) => {
       Authorization: `Bot ${BOT_TOKEN}`,
     }
   })
-}
-
-module.exports = {
-  sendMessage,
 }

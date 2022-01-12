@@ -10,6 +10,7 @@ node_modules/
 
 build/
 database/
+dist/
 
 # misc
 .DS_Store
@@ -23,3 +24,5 @@ app.yaml
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+tsconfig.tsbuildinfo

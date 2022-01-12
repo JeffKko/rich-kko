@@ -21,6 +21,22 @@ node_modules/
 # other
 .env
 .env.*
+
+# only upload needed files in workspaces
+#
+# structure:
+#
+# - workspaces/
+#   - server/
+#     - dist/
+#     - package.json
+#   - web/
+#     - build/
+#
+/workspaces/server/**
+!/workspaces/server/
+!/workspaces/server/dist/**
+!/workspaces/server/package.json
 /workspaces/web/**
 !/workspaces/web/
 !/workspaces/web/build/**

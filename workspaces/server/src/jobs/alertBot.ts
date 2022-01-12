@@ -14,14 +14,20 @@
 //     "17928899.62484339" // 请忽略该参数
 //   ]
 // ]
-const axios = require('axios')
-const { sendMessage } = require('../discordBot')
+import axios from 'axios'
+import { sendMessage } from '../discordBot'
+
+interface IGetChangePercentProps {
+  interval: string,
+  startTime: number,
+  endTime: number,
+}
 
 const getChangePercent = async ({
   interval,
   startTime,
   endTime,
-}) => {
+}: IGetChangePercentProps) => {
   const { data } = await axios.get('https://api.binance.com/api/v3/klines', {
     params: {
       symbol: 'BTCUSDT',
@@ -50,14 +56,14 @@ const getChangePercent = async ({
   }
 };
 
-const generateMessage = (title, way, percent, now) => {
+const generateMessage = (title: string, way: string, percent: number, now: number) => {
   const msg = `${title} ${way} ${Math.abs(percent)}%\n目前生命值: ${now}`
   console.log(msg)
   return msg
 }
 
 // 1小時 3%
-const perHour = async () => {
+export const perHour = async () => {
   const date = new Date();
   let msg = ''
 
@@ -81,7 +87,7 @@ const perHour = async () => {
 }
 
 // 4小時 10%
-const per4Hour = async () => {
+export const per4Hour = async () => {
   const date = new Date();
   let msg = ''
 
@@ -105,7 +111,7 @@ const per4Hour = async () => {
 }
 
 // 1天 15%
-const perDay = async () => {
+export const perDay = async () => {
   const date = new Date();
   let msg = ''
 
@@ -128,7 +134,7 @@ const perDay = async () => {
   if (msg) await sendMessage(msg)
 }
 
-const perWeek = async () => {
+export const perWeek = async () => {
   const date = new Date();
   let msg = ''
 
@@ -152,7 +158,7 @@ const perWeek = async () => {
   if (msg) await sendMessage(msg)
 }
 
-module.exports = {
+export default {
   perHour,
   per4Hour,
   perDay,
