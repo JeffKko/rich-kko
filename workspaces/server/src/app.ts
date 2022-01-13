@@ -1,5 +1,6 @@
-import express from 'express'
+import express, { Request, Response, NextFunction } from 'express'
 import cors from 'cors'
+import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import axios from 'axios'
 import crypto from 'crypto'
@@ -59,6 +60,9 @@ export default () => {
   app.use(cookieParser())
   // app.use('/', express.static('build'))
   app.use(express.json()) // parse json
+
+  app.use(helmet());
+
 
   app.use('/', routers);
 
@@ -123,7 +127,11 @@ export default () => {
     } catch (error) {
       console.log(error)
     }
+  })
 
+  // error handler
+  app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    res.status(500).json({ message: err.message || err });
   })
 
   // app.post('/message', (req, res) => {

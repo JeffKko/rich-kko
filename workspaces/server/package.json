@@ -18,17 +18,18 @@
     "crypto": "^1.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
+    "helmet": "^5.0.1",
     "qs": "^6.10.2",
     "sequelize": "^6.12.4",
     "sqlite3": "^5.0.2"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.12",
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.8",
-    "@types/axios": "^0.14.0",
-    "@types/dotenv": "^8.2.0",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0"
   }
