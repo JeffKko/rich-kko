@@ -1,24 +1,35 @@
 import { Request, Response, Router } from 'express'
 import alertBot from '../../jobs/alertBot'
+import defaultHandler from '../defaultHandler'
 
 const router = Router();
+const jobHandler = defaultHandler(null)
 
 const createJobCallback = (method: Function) => async (req: Request, res: Response) => {
   try {
     await method()
-    await res.status(200).end('200')
+    return {
+      data: 'ok',
+      status: 200,
+    }
   } catch (error) {
-    await res.status(400).json({ message: error })
+    return {
+      message: 'some error',
+      status: 400,
+    }
   }
 }
 
-router.get('/perHour', createJobCallback(alertBot.perHour))
-router.get('/per4Hour', createJobCallback(alertBot.per4Hour))
-router.get('/perDay', createJobCallback(alertBot.perDay))
-router.get('/perWeek', createJobCallback(alertBot.perWeek))
-router.get('/test', async (req: Request, res: Response) => {
+router.get('/perHour', jobHandler(createJobCallback(alertBot.perHour)))
+router.get('/per4Hour', jobHandler(createJobCallback(alertBot.per4Hour)))
+router.get('/perDay', jobHandler(createJobCallback(alertBot.perDay)))
+router.get('/perWeek', jobHandler(createJobCallback(alertBot.perWeek)))
+router.get('/test', jobHandler(async () => {
   console.log('here is some log.')
-  await res.status(200).end('200')
-})
+  return {
+    data: 'ok',
+    status: 200,
+  }
+}))
 
 export default router
