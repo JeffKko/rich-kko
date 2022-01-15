@@ -83,6 +83,8 @@ export const perHour = async () => {
     msg = generateMessage('🚨崩', '1小時下跌', hChangePercent, hLastPrice)
   }
 
+  console.log(`an hour percent: ${hChangePercent}`)
+
   if (msg) await sendMessage(msg)
 }
 
