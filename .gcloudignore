@@ -40,3 +40,4 @@ node_modules/
 /workspaces/web/**
 !/workspaces/web/
 !/workspaces/web/build/**
+/workspaces/app/

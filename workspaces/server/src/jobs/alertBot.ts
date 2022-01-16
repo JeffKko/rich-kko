@@ -85,7 +85,21 @@ export const perHour = async () => {
 
   console.log(`an hour percent: ${hChangePercent}`)
 
-  if (msg) await sendMessage(msg)
+  try {
+    if (msg) {
+      const res = await sendMessage(msg)
+      console.log(res)
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`sendMessage fail.`);
+      console.error(error.name);
+      console.error(error.message);
+      console.error(error.stack);
+    } else {
+      console.error(error);
+    }
+  }
 }
 
 // 4小時 10%
