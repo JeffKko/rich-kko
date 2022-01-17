@@ -61,10 +61,7 @@ export default class JobController extends ControllerBase {
 
     const res = await PchomeTopModel.insertMany(payload);
 
-    await sendMessage(`
-      Job Success: getPchomeTop.
-      ${res[0]}
-    `);
+    await sendMessage(`Job Success: getPchomeTop. \n ${res[0]}`);
 
     return this.formatResponse(res, HttpStatus.OK);
   }

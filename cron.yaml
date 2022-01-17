@@ -1,20 +1,24 @@
 cron:
-  - description: "alert 1H3%"
+  - description: 'alert 1H3%'
     url: /job/perHour
     schedule: every 20 minutes
 
-  - description: "alert 4H10%"
+  - description: 'alert 4H10%'
     url: /job/per4Hour
     schedule: every 1 hours
 
-  - description: "alert 1D15%"
+  - description: 'alert 1D15%'
     url: /job/perDay
     schedule: every 6 hours
 
-  - description: "alert 1W30%"
+  - description: 'alert 1W30%'
     url: /job/perWeek
     schedule: every day 23:00
 
-  - description: "test"
-    url: /job/test
-    schedule: every 1 hours
+  - description: 'Crawl Pchome top products'
+    url: /job/pchomeTop
+    schedule: every day 04:00
+
+  # - description: 'test'
+  #   url: /job/test
+  #   schedule: every 1 hours
