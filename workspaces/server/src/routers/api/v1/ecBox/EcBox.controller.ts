@@ -2,11 +2,20 @@ import { Request, Response, NextFunction } from 'express';
 import ControllerBase from '../../../../bases/Controller.base';
 import { HttpStatus } from '@/types';
 import { ProductModel } from '../../../../models/product/Product.model';
+import { PchomeTopModel } from '../../../../models/pchomeTop/PchomeTop.model';
 
 export default class ExBoxController extends ControllerBase {
   public async getProduct(req: Request, res: Response, next: NextFunction) {
     const ID = req.params.id;
     const documents = await ProductModel.find({ ID });
+
+    return this.formatResponse(documents, HttpStatus.OK);
+  }
+
+  public async getProductList(req: Request, res: Response, next: NextFunction) {
+    const { productIDs } = req.body;
+
+    const documents = await ProductModel.find({ ID: productIDs });
 
     return this.formatResponse(documents, HttpStatus.OK);
   }
@@ -40,11 +49,17 @@ export default class ExBoxController extends ControllerBase {
     return this.formatResponse('ok', HttpStatus.OK);
   }
 
-  public async removeProduct(req: Request, res: Response, next: NextFunction) {
+  public async deleteProduct(req: Request, res: Response, next: NextFunction) {
     const ID = req.params.id;
 
     await ProductModel.findOneAndDelete({ ID });
 
     return this.formatResponse('ok', HttpStatus.OK);
+  }
+
+  public async getPchomeTop(req: Request, res: Response, next: NextFunction) {
+    const documents = await PchomeTopModel.find();
+
+    return this.formatResponse(documents, HttpStatus.OK);
   }
 }

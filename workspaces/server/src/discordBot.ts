@@ -6,7 +6,10 @@ export enum ChannelIDs {
   CRYPTO = '932536055083696199',
 }
 
-export const sendMessage = (content: string, channelID = ChannelIDs.NORMAL) => {
+export const sendMessage = (
+  content: string,
+  channelID = ChannelIDs.RICHKKO,
+) => {
   const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
 
   return axios.post(

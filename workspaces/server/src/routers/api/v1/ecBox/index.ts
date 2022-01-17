@@ -8,10 +8,14 @@ const router = Router();
 
 router.get('/product/:id', ecBoxHandler(ecBoxController.getProduct));
 
+router.post('/product', ecBoxHandler(ecBoxController.getProductList));
+
 router.post('/product', ecBoxHandler(ecBoxController.createProduct));
 
 router.patch('/product/:id', ecBoxHandler(ecBoxController.updateProduct));
 
-router.delete('/product/:id', ecBoxHandler(ecBoxController.removeProduct));
+router.delete('/product/:id', ecBoxHandler(ecBoxController.deleteProduct));
+
+router.get('/pchomeTop', ecBoxHandler(ecBoxController.getPchomeTop));
 
 export default router;

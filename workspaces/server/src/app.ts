@@ -7,6 +7,7 @@ import crypto from 'crypto';
 import qs from 'qs';
 // import { Sequelize, Model, DataTypes } from 'sequelize'
 import routers from './routers';
+import { sendMessage } from './discordBot';
 
 export default () => {
   const app = express();
@@ -126,6 +127,12 @@ export default () => {
 
   // error handler
   app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    const message = `
+      Error: ${err.name}
+      Message: ${err.message}
+      Stack: ${err.stack}
+    `;
+    sendMessage(message);
     res.status(500).json({ message: err.message || err });
   });
 
