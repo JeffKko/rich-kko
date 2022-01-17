@@ -1,8 +1,8 @@
-import { Router } from 'express'
-import talk from './talk'
+import { Router } from 'express';
+import v1Router from './v1';
 
 const router = Router();
 
-router.get('/talk', talk)
+router.use('/v1', v1Router);
 
-export default router
+export default router;

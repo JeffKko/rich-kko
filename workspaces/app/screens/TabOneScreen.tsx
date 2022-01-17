@@ -7,10 +7,22 @@ import { RootTabScreenProps } from '../types';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
+interface Products {
+  ID: String;
+  cateID: String;
+  describe: String;
+  name: String;
+  originPrice: Number;
+  picB: String;
+  picS: String;
+  price: Number;
+}
+
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<'TabOne'>) {
   const [message, setMessage] = useState('');
+  const [products, setProducts] = useState<Products[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -19,10 +31,17 @@ export default function TabOneScreen({
     })();
   }, []);
 
+  const handleClick = () => {
+    alert(123);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
       <Text style={styles.title}>{message}</Text>
+      <Text style={styles.title} onPress={handleClick}>
+        click me
+      </Text>
       <View
         style={styles.separator}
         lightColor="#eee"
