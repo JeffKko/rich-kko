@@ -15,7 +15,7 @@ export const PchomeTopSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: false,
+    required: true,
   },
   originPrice: {
     type: Number,
@@ -26,6 +26,10 @@ export const PchomeTopSchema = new mongoose.Schema({
     required: false,
   },
   price: {
+    type: Number,
+    required: false,
+  },
+  lastUpdate: {
     type: Number,
     required: false,
   },

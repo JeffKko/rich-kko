@@ -58,7 +58,9 @@ export default class ExBoxController extends ControllerBase {
   }
 
   public async getPchomeTop(req: Request, res: Response, next: NextFunction) {
-    const documents = await PchomeTopModel.find();
+    const documents = await PchomeTopModel.find({}, null, {
+      sort: { created_at: -1 },
+    }).limit(30);
 
     return this.formatResponse(documents, HttpStatus.OK);
   }

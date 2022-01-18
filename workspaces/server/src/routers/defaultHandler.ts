@@ -1,17 +1,22 @@
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response, NextFunction } from 'express';
 import { IFormatResponse } from '../types';
 
 export default function defaultHandler<T>(context: T) {
-  return (method: (req: Request, res: Response, next: NextFunction) => Promise<IFormatResponse>) => {
+  return (
+    method: (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => Promise<IFormatResponse>,
+  ) => {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const result = await method.call(context, req, res, next)
-        res.status(result.status).json(result)
+        const result = await method.call(context, req, res, next);
+        res.status(result.status).json(result.data);
       } catch (error) {
-        console.error(error)
-        next(error)
+        console.error(error);
+        next(error);
       }
-    }
-  }
+    };
+  };
 }
-

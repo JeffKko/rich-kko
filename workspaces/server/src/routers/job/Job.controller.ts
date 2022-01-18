@@ -32,6 +32,7 @@ interface PchomeTop {
 
 export default class JobController extends ControllerBase {
   public async getPchomeTop() {
+    const timestamp = new Date().getTime();
     const { data } = await axios.post<PchomeTop>(
       'https://apih.pcloud.tw/hermes/api/goods/rank',
       {
@@ -57,11 +58,12 @@ export default class JobController extends ControllerBase {
       name: v.name,
       originPrice: v.sale_price,
       picS: v.goods_img_url,
+      lastUpdate: timestamp,
     }));
 
-    const res = await PchomeTopModel.insertMany(payload);
+    const res = await PchomeTopModel.insertMany([...payload].reverse());
 
-    await sendMessage(`Job Success: getPchomeTop. \n ${res[0]}`);
+    await sendMessage(`Job Success: getPchomeTop. \n ${payload[0]}`);
 
     return this.formatResponse(res, HttpStatus.OK);
   }
