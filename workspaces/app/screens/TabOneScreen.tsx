@@ -7,6 +7,7 @@ import {
   Button,
   Alert,
 } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -26,38 +27,10 @@ interface Products {
   price?: number;
 }
 
-const DATA = [
-  {
-    title: 'Main dishes',
-    data: ['Pizza', 'Burger', 'Risotto'],
-  },
-  {
-    title: 'Sides',
-    data: ['French Fries', 'Onion Rings', 'Fried Shrimps'],
-  },
-  {
-    title: 'Drinks',
-    data: ['Water', 'Coke', 'Beer'],
-  },
-  {
-    title: 'Desserts',
-    data: ['Cheese Cake', 'Ice Cream'],
-  },
-];
-
-const Item = ({ title }: any) => (
-  <View>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
-
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<'TabOne'>) {
-  const [message, setMessage] = useState('');
   const [products, setProducts] = useState<Products[]>([]);
-
-  const renderItem = ({ item }: any) => <Item title={item.title} />;
 
   useEffect(() => {
     (async () => {
@@ -77,7 +50,6 @@ export default function TabOneScreen({
     <View style={styles.container}>
       <ScrollView>
         <Text style={styles.title}>Tab One</Text>
-        <Text style={styles.title}>{message}</Text>
         <Text style={styles.title} onPress={handleClick}>
           click me
         </Text>
@@ -99,10 +71,23 @@ export default function TabOneScreen({
                 />
                 <Text>{v.name}</Text>
                 <Text>{pressed ? 'Pressed!' : 'Press Me'}</Text>
-                <Button
+                <Pressable
+                  onPress={() => navigation.navigate('LoginModal')}
+                  style={({ pressed }) => ({
+                    opacity: pressed ? 0.5 : 1,
+                  })}
+                >
+                  <FontAwesome
+                    name="info-circle"
+                    size={25}
+                    color={'tomato'}
+                    style={{ marginRight: 15 }}
+                  />
+                </Pressable>
+                {/* <Button
                   title="save"
                   onPress={() => Alert.alert('Simple Button pressed')}
-                />
+                /> */}
               </>
             )}
           </Pressable>
@@ -110,7 +95,7 @@ export default function TabOneScreen({
         <View
           style={styles.separator}
           lightColor="#eee"
-          darkColor="rgba(255,255,255,0.1)"
+          darkColor="#80575719"
         />
         <EditScreenInfo path="/screens/TabOneScreen.tsx" />
       </ScrollView>

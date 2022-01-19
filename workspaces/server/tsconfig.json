@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig",
   "compilerOptions": {
-    "outDir": "dist", // 指定編譯後的檔案存放點
+    "outDir": "./dist", // 指定編譯後的檔案存放點
     "rootDir": "./src", // 載入點的位置
     "baseUrl": ".", // 指定匯入檔案的基準路徑
     "paths": {
