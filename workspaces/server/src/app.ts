@@ -127,8 +127,14 @@ export default () => {
 
   // error handler
   app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    const content = `Error: ${err.name}\nMessage: ${err.message}\nStack: ${err.stack}`;
-    sendMessage(content);
+    let content;
+
+    if (err.message) {
+      content = `Error: ${err.name}\nMessage: ${err.message}\nStack: ${err.stack}`;
+    } else {
+      content = `Error: ${err}`;
+    }
+    // sendMessage(content);
     res.status(500).json({ message: err.message || err });
   });
 

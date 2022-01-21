@@ -1,10 +1,36 @@
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, Button } from 'react-native';
+import { useEffect } from 'react';
 
 import { Text, View } from '../components/Themed';
 
+import * as Google from 'expo-auth-session/providers/google';
+import { ResponseType } from 'expo-auth-session';
+
 export default function ModalScreen() {
-  function onPressGoogleAuth() {}
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    expoClientId:
+      '885937038896-fgvohm4hdsv8sifaf5117tcmbbkrp4p4.apps.googleusercontent.com',
+    // iosClientId: 'my-ios-id',
+  });
+
+  // console.log(Google.discovery);
+
+  useEffect(() => {
+    console.log('request');
+    console.log(request);
+
+    console.log('response');
+    console.log(response);
+
+    if (response?.type === 'success') {
+      const { authentication } = response;
+    }
+  }, [response]);
+
+  function onPressGoogleAuth() {
+    promptAsync();
+  }
 
   return (
     <View style={styles.container}>
