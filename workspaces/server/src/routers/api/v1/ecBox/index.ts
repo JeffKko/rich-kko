@@ -1,12 +1,13 @@
 import { Router } from 'express';
 import EcBoxController from './EcBox.controller';
 import defaultHandler from '../../../../routers/defaultHandler';
+import { jwtGuard } from '../../../../lib/JwtGuard';
 
 const ecBoxController = new EcBoxController();
 const ecBoxHandler = defaultHandler<EcBoxController>(ecBoxController);
 const router = Router();
 
-router.get('/product/:id', ecBoxHandler(ecBoxController.getProduct));
+router.get('/product/:id', jwtGuard, ecBoxHandler(ecBoxController.getProduct));
 
 router.post('/product', ecBoxHandler(ecBoxController.getProductList));
 

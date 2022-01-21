@@ -28,8 +28,10 @@ export const jwtGuard = (req: Request, res: Response, next: NextFunction) => {
     next();
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
-      console.error(error.message);
-      res.status(HttpStatus.UNAUTHORIZED).json(error.message);
+      console.error(`${error.message}, jwt: ${authorization}`);
+      res
+        .status(HttpStatus.UNAUTHORIZED)
+        .json(`${error.message}, jwt: ${authorization}`);
     } else {
       next(error);
     }

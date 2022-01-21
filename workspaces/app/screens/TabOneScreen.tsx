@@ -15,6 +15,7 @@ import { RootTabScreenProps } from '../types';
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useStore } from '../stores/userInfo';
 
 interface Products {
   ID: string;
@@ -30,6 +31,7 @@ interface Products {
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<'TabOne'>) {
+  const { jwt } = useStore();
   const [products, setProducts] = useState<Products[]>([]);
 
   useEffect(() => {
@@ -37,6 +39,8 @@ export default function TabOneScreen({
       const { data } = await axios.get<Products[]>(
         'http://localhost:8080/api/v1/ecBox/pchomeTop',
       );
+
+      console.log(data[0]);
 
       setProducts(data.slice(0, 3));
     })();
@@ -53,6 +57,7 @@ export default function TabOneScreen({
         <Text style={styles.title} onPress={handleClick}>
           click me
         </Text>
+        <Text>{jwt}</Text>
         {products.map(v => (
           <Pressable
             key={v.ID}

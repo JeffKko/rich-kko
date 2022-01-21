@@ -16,6 +16,7 @@ export default class AuthController extends ControllerBase {
       `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`,
     );
 
+    // TODO: shoud use expiresIn from body?
     const expiry = new Date();
     expiry.setDate(expiry.getDate() + 7);
 
