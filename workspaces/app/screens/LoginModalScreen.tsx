@@ -8,11 +8,11 @@ import { Text, View } from '../components/Themed';
 import * as Google from 'expo-auth-session/providers/google';
 import { ResponseType } from 'expo-auth-session';
 
-import { useStore } from '../stores/userInfo';
+import { useStore, UserInfo } from '../stores/userInfo';
 import { setAuthHeader } from '../services/api';
 
 export default function ModalScreen() {
-  const { jwt, setJwt } = useStore();
+  const { jwt, name, setJwt, setUserInfo } = useStore();
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     // responseType: ResponseType.Token
@@ -33,7 +33,7 @@ export default function ModalScreen() {
         const { authentication } = response;
         const { accessToken, expiresIn, issuedAt } = authentication;
 
-        const { data } = await axios.post<string>(
+        const { data } = await axios.post<UserInfo>(
           'http://localhost:8080/api/v1/auth/google',
           {
             accessToken,
@@ -44,8 +44,10 @@ export default function ModalScreen() {
 
         console.log('get JWT');
         console.log(data);
-        setAuthHeader(data);
-        setJwt(data);
+
+        setAuthHeader(data.jwt);
+        setJwt(data.jwt);
+        setUserInfo(data);
       }
     })();
   }, [response]);
@@ -57,6 +59,7 @@ export default function ModalScreen() {
   return (
     <View style={styles.container}>
       <Text>{jwt}</Text>
+      <Text>{name}</Text>
       <Text style={styles.title}>Login Modal</Text>
       <View
         style={styles.separator}

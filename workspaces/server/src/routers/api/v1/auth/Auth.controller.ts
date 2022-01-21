@@ -30,6 +30,15 @@ export default class AuthController extends ControllerBase {
 
     const jwt = JWT.sign(payload, process.env.JWT_SIGN as string);
 
-    return this.formatResponse(jwt, HttpStatus.OK);
+    return this.formatResponse(
+      {
+        jwt,
+        ID: payload.id,
+        name: payload.name,
+        email: payload.email,
+        exp: payload.exp,
+      },
+      HttpStatus.OK,
+    );
   }
 }
