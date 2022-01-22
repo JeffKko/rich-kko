@@ -2,10 +2,13 @@ import { Router } from 'express';
 import EcBoxController from './EcBox.controller';
 import defaultHandler from '../../../../routers/defaultHandler';
 import { jwtGuard } from '../../../../lib/JwtGuard';
+import watchListRouter from './watchList';
 
 const ecBoxController = new EcBoxController();
 const ecBoxHandler = defaultHandler<EcBoxController>(ecBoxController);
 const router = Router();
+
+router.use('/', watchListRouter);
 
 router.get('/product/:id', jwtGuard, ecBoxHandler(ecBoxController.getProduct));
 

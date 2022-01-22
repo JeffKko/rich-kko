@@ -3,12 +3,16 @@ import mongoose from 'mongoose';
 const EmailValidator = (email: string) =>
   /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi.test(email);
 
-export const UserSchema = new mongoose.Schema({
-  username: {
+export const UserInfoSchema = new mongoose.Schema({
+  ID: {
     type: String,
     required: true,
-    minlength: 6,
-    maxlength: 16,
+  },
+  name: {
+    type: String,
+    required: true,
+    // minlength: 6,
+    // maxlength: 16,
   },
   email: {
     type: String,
@@ -16,5 +20,9 @@ export const UserSchema = new mongoose.Schema({
     validate: {
       validator: EmailValidator,
     },
+  },
+  updateAt: {
+    type: Number,
+    required: true,
   },
 });

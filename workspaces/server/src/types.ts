@@ -40,7 +40,7 @@ export interface GoogleUserInfo {
 
 export interface JwtPayload {
   accessToken: string;
-  id: string;
+  ID: string;
   name: string;
   email: string;
   exp: number;
