@@ -3,11 +3,13 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
+  ImageBackground,
   Pressable,
   Button,
   Alert,
+  Dimensions,
 } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -16,6 +18,7 @@ import { RootTabScreenProps } from '../types';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useStore } from '../stores/userInfo';
+import { richkkoApi } from '../services/api';
 
 interface Products {
   ID: string;
@@ -28,26 +31,64 @@ interface Products {
   price?: number;
 }
 
+const dimensions = Dimensions.get('window');
+const imageHeight = Math.round((dimensions.width * 3) / 4 / 2);
+const imageWidth = dimensions.width / 2;
+
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<'TabOne'>) {
-  const { jwt } = useStore();
+  const { jwt, ID: userID } = useStore();
   const [products, setProducts] = useState<Products[]>([]);
+  const [watchList, setWatchList] = useState<string[]>([]);
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get<Products[]>(
-        'http://localhost:8080/api/v1/ecBox/pchomeTop',
+      const { data: products } = await richkkoApi.get<Products[]>(
+        '/ecBox/pchomeTop',
       );
-
-      console.log(data[0]);
-
-      setProducts(data.slice(0, 3));
+      setProducts(products.slice(0, 5));
     })();
   }, []);
 
+  useEffect(() => {
+    if (!userID) return;
+
+    (async () => {
+      const { data: watchList } = await richkkoApi.get<string[]>(
+        `/ecBox/user/${userID}/watchList`,
+      );
+      setWatchList(watchList);
+    })();
+  }, [userID]);
+
   const handleClick = () => {
     alert(123);
+  };
+
+  const handleClickWatch = async (prodID: string) => {
+    if (!userID) {
+      navigation.navigate('LoginModal');
+      return;
+    }
+
+    const index = watchList.findIndex(v => v === prodID);
+
+    if (index > -1) {
+      await richkkoApi.delete<string[]>(
+        `/ecBox/user/${userID}/watchList/${prodID}`,
+      );
+
+      setWatchList(value => {
+        value.splice(index, 1);
+        return [...value];
+      });
+    } else {
+      await richkkoApi.post<string[]>(
+        `/ecBox/user/${userID}/watchList/${prodID}`,
+      );
+      setWatchList(value => [...value, prodID]);
+    }
   };
 
   return (
@@ -58,52 +99,66 @@ export default function TabOneScreen({
           click me
         </Text>
         <Text>{jwt}</Text>
-        {products.map(v => (
-          <Pressable
-            key={v.ID}
-            onPress={() => {}}
-            style={({ pressed }) => [
-              {
-                backgroundColor: pressed ? 'rgb(210, 230, 255)' : 'white',
-              },
-              // styles.wrapperCustom
-            ]}
-          >
-            {({ pressed }) => (
-              <>
-                <Image
-                  style={styles.stretch}
-                  source={{ uri: v.picS, width: 200, height: 200 }}
-                />
-                <Text>{v.name}</Text>
-                <Text>{pressed ? 'Pressed!' : 'Press Me'}</Text>
-                <Pressable
-                  onPress={() => navigation.navigate('LoginModal')}
-                  style={({ pressed }) => ({
-                    opacity: pressed ? 0.5 : 1,
-                  })}
-                >
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={'tomato'}
-                    style={{ marginRight: 15 }}
+        <Text>{JSON.stringify(watchList)}</Text>
+        <View style={styles.productListContainer}>
+          {products.map(v => (
+            <Pressable
+              key={v.ID}
+              onPress={() => {}}
+              style={({ pressed }) => [
+                {
+                  backgroundColor: pressed ? 'rgb(210, 230, 255)' : 'white',
+                  opacity: pressed ? 0.8 : 1,
+                },
+                // styles.wrapperCustom
+              ]}
+            >
+              {({ pressed }) => (
+                <View style={styles.product}>
+                  <Image
+                    style={styles.productImage}
+                    source={{ uri: v.picS }}
+                    // resizeMode={'cover'}
                   />
-                </Pressable>
-                {/* <Button
+                  <View style={styles.productContent}>
+                    <Text style={{ width: imageWidth - 16 }}>{v.name}</Text>
+                    <Text>{pressed ? 'Pressed!' : 'Press Me'}</Text>
+                    <Pressable
+                      onPress={() => handleClickWatch(v.ID)}
+                      style={({ pressed }) => ({
+                        opacity: pressed ? 0.5 : 1,
+                      })}
+                    >
+                      {watchList.includes(v.ID) ? (
+                        <Ionicons
+                          name="ios-heart-sharp"
+                          size={24}
+                          color="tomato"
+                        />
+                      ) : (
+                        <Ionicons
+                          name="ios-heart-outline"
+                          size={24}
+                          color="gray"
+                        />
+                      )}
+                    </Pressable>
+                  </View>
+                  {/* <Button
                   title="save"
                   onPress={() => Alert.alert('Simple Button pressed')}
                 /> */}
-              </>
-            )}
-          </Pressable>
-        ))}
-        <View
+                </View>
+              )}
+            </Pressable>
+          ))}
+        </View>
+        {/* <View
           style={styles.separator}
           lightColor="#eee"
           darkColor="#80575719"
-        />
-        <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+        /> */}
+        {/* <EditScreenInfo path="/screens/TabOneScreen.tsx" /> */}
       </ScrollView>
     </View>
   );
@@ -128,9 +183,25 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
-  stretch: {
-    width: 200,
-    height: 200,
-    resizeMode: 'stretch',
+  productListContainer: {
+    // flex: 1,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  product: {
+    flex: 1,
+    width: '50%',
+    height: 250,
+  },
+  productImage: {
+    width: imageWidth,
+    height: imageHeight,
+    // resizeMode: 'stretch',
+    resizeMode: 'cover',
+  },
+  productContent: {
+    padding: 8,
   },
 });
