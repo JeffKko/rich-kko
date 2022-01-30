@@ -50,17 +50,21 @@ export const ProductSchema = new mongoose.Schema({
     minlength: 4,
     maxlength: 16,
   },
-  describe: {
-    type: String,
-    required: false,
-  },
   name: {
+    type: String,
+    required: true,
+  },
+  describe: {
     type: String,
     required: false,
   },
   originPrice: {
     type: Number,
     required: true,
+  },
+  price: {
+    type: Number,
+    required: false,
   },
   picB: {
     type: String,
@@ -70,7 +74,15 @@ export const ProductSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  price: {
+  qty: {
+    type: Number,
+    required: false,
+  },
+  isArrival24h: {
+    type: Number,
+    required: false, // 0 or 1
+  },
+  lastUpdate: {
     type: Number,
     required: false,
   },

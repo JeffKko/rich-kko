@@ -58,6 +58,7 @@ export default function TabOneScreen({
       const { data: watchList } = await richkkoApi.get<string[]>(
         `/ecBox/user/${userID}/watchList`,
       );
+
       setWatchList(watchList);
     })();
   }, [userID]);
@@ -75,19 +76,37 @@ export default function TabOneScreen({
     const index = watchList.findIndex(v => v === prodID);
 
     if (index > -1) {
-      await richkkoApi.delete<string[]>(
-        `/ecBox/user/${userID}/watchList/${prodID}`,
-      );
+      try {
+        await richkkoApi.delete<string[]>(
+          `/ecBox/user/${userID}/watchList/${prodID}`,
+        );
 
-      setWatchList(value => {
-        value.splice(index, 1);
-        return [...value];
-      });
+        setWatchList(value => {
+          value.splice(index, 1);
+          return [...value];
+        });
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (error?.response?.status === 401) {
+            navigation.navigate('LoginModal');
+          }
+        }
+        console.error(error);
+      }
     } else {
-      await richkkoApi.post<string[]>(
-        `/ecBox/user/${userID}/watchList/${prodID}`,
-      );
-      setWatchList(value => [...value, prodID]);
+      try {
+        await richkkoApi.post<string[]>(
+          `/ecBox/user/${userID}/watchList/${prodID}`,
+        );
+        setWatchList(value => [...value, prodID]);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (error?.response?.status === 401) {
+            navigation.navigate('LoginModal');
+          }
+        }
+        console.error(error);
+      }
     }
   };
 
@@ -121,8 +140,11 @@ export default function TabOneScreen({
                     // resizeMode={'cover'}
                   />
                   <View style={styles.productContent}>
-                    <Text style={{ width: imageWidth - 16 }}>{v.name}</Text>
+                    <Text numberOfLines={2} style={{ width: imageWidth - 16 }}>
+                      {v.name}
+                    </Text>
                     <Text>{pressed ? 'Pressed!' : 'Press Me'}</Text>
+                    <Text>${v.originPrice}</Text>
                     <Pressable
                       onPress={() => handleClickWatch(v.ID)}
                       style={({ pressed }) => ({

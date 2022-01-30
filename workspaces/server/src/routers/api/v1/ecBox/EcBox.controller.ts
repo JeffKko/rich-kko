@@ -3,13 +3,33 @@ import ControllerBase from '../../../../bases/Controller.base';
 import { HttpStatus } from '@/types';
 import { ProductModel } from '../../../../models/product/Product.model';
 import { PchomeTopModel } from '../../../../models/pchomeTop/PchomeTop.model';
+import { sendMessage } from '../../../../discordBot';
+import { getPchomeProduct } from '../../../../lib/Pchome.service';
 
 export default class ExBoxController extends ControllerBase {
   public async getProduct(req: Request, res: Response, next: NextFunction) {
     const ID = req.params.id;
-    const documents = await ProductModel.find({ ID });
+    const document = await ProductModel.findOne({ ID }, null, {
+      sort: { $natural: -1 },
+    });
 
-    return this.formatResponse(documents, HttpStatus.OK);
+    if (document) {
+      return this.formatResponse(document, HttpStatus.OK);
+    } else {
+      console.log(`can't find ${ID} in db, fetching pchome api`);
+
+      const data = await getPchomeProduct(ID);
+
+      if (!data) {
+        const message = `Can't find Api Product: ${ID}`;
+        await sendMessage(message);
+        return this.formatResponse(message, HttpStatus.BAD_REQUEST);
+      }
+
+      await sendMessage(`save product Success. \n Product: ${data}`);
+
+      return this.formatResponse(data, HttpStatus.OK);
+    }
   }
 
   public async getProductList(req: Request, res: Response, next: NextFunction) {

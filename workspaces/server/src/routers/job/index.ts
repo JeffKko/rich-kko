@@ -41,5 +41,6 @@ router.get(
 );
 
 router.get('/pchomeTop', JobHanlder(jobController.getPchomeTop));
+router.get('/pchomeProduct/:ID', JobHanlder(jobController.getPchomeProduct));
 
 export default router;
